@@ -17,6 +17,8 @@
 #define FX_SOUND 0x01
 
 #define BUTTON 5
+#define JOYX A5
+#define JOYY A8
 #define RED 0
 #define GREEN 1
 #define BLUE 2
@@ -35,12 +37,6 @@ void setup()
     pinMode(RED,   OUTPUT);
     pinMode(GREEN, OUTPUT);
     pinMode(BLUE,  OUTPUT);
-    digitalWrite(RED, HIGH);
-    delay(500);
-    digitalWrite(RED, LOW);
-    digitalWrite(GREEN, HIGH);
-    delay(500);
-    digitalWrite(GREEN, LOW);
     digitalWrite(BLUE, HIGH);
     delay(500);
     digitalWrite(BLUE, LOW);
