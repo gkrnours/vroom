@@ -16,15 +16,15 @@
 #define FX_VIBRATE 0x02
 #define FX_SOUND 0x01
 
-#define BUTTON 5
-#define JOYX A5
-#define JOYY A8
-#define RED 0
-#define GREEN 1
-#define BLUE 2
+#define BTN_A 1
+#define BTN_B 2
+#define JOYX A6
+#define JOYY A7
+#define LED 10
 
 RF24 radio(9,12);
 const uint8_t addresses[][6] = {"1vrum","2vrum"};
+CRGB leds[1];
 
 void setup()
 {
@@ -33,26 +33,20 @@ void setup()
     radio.openWritingPipe(addresses[0]);
     radio.openReadingPipe(1,addresses[1]);
 
-    pinMode(BUTTON, INPUT);
-    pinMode(RED,   OUTPUT);
-    pinMode(GREEN, OUTPUT);
-    pinMode(BLUE,  OUTPUT);
-    digitalWrite(BLUE, HIGH);
-    delay(500);
-    digitalWrite(BLUE, LOW);
+    pinMode(BTN_A, INPUT_PULLUP);
+    pinMode(BTN_B, INPUT_PULLUP);
+    FastLED.addLeds<NEOPIXEL, LED>(leds, 1);
 }
 
 void loop()
 {
     uint8_t request = 0;
 
-    if (digitalRead(BUTTON) == HIGH) {
-        digitalWrite(GREEN, HIGH);
-        digitalWrite(RED,   LOW);
+    if (digitalRead(BTN_A) == HIGH) {
         request |= ENG_FORWARD;
+        leds[0] = CRGB::White; FastLED.show();
     } else {
-        digitalWrite(RED,   HIGH);
-        digitalWrite(GREEN, LOW);
+        leds[0] = CRGB::RED; FastLED.show();
     }
     radio.write(&request, sizeof(uint8_t));
     delay(50);
